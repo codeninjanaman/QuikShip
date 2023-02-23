@@ -17,6 +17,8 @@ class Mobileotp extends StatefulWidget {
 
 
 class _MobileotpState extends State<Mobileotp> {
+  final FirebaseAuth auth=FirebaseAuth.instance;
+
   TextEditingController countryController = TextEditingController();
   var phone="";
   final emailcontroller = TextEditingController();
@@ -55,22 +57,11 @@ class _MobileotpState extends State<Mobileotp> {
   //     }
       
   // }
-
+  @override
   void initState() {
     // TODO: implement initState
     countryController.text = "+91";
     super.initState();
-  }
-
-  void showErrorMEssage(String message){
-    showDialog(context: context, builder: (context){
-      return
-      AlertDialog(
-        backgroundColor: Colors.deepPurpleAccent,
-        title: Center(child: Text(message,
-        style: TextStyle(color: Colors.white),)),
-      );
-    });
   }
 
   @override
@@ -228,7 +219,6 @@ class _MobileotpState extends State<Mobileotp> {
   },
   codeAutoRetrievalTimeout: (String verificationId) {},
 );
-                      
                       // Navigator.pushNamed(context, 'verify');
                     },
                  child: Text('SEND OTP',

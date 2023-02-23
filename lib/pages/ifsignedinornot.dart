@@ -2,8 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:quikshipnew/homepage.dart';
-import 'package:quikshipnew/pages/openingpage.dart';
-import 'package:quikshipnew/pehlapage.dart';
+import 'package:quikshipnew/main.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -17,11 +16,11 @@ class AuthPage extends StatelessWidget {
         builder: (context, snapshot) {
           //user is logged in
           if(snapshot.hasData){
-            return const Pehlapage();
+            return const navigationpage();
           }
           //user not logged in 
           else{
-            return const Login();
+            return Login();
           }
         },
       ),

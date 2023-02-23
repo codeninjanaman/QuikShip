@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:quikshipnew/MyVerify.dart';
 import 'package:quikshipnew/homepage.dart';
+import 'package:quikshipnew/main.dart';
 import 'package:quikshipnew/mobileotp.dart';
 import 'package:quikshipnew/pehlapage.dart';
 
 class MyVerify extends StatefulWidget {
   const MyVerify({super.key});
-  
-  static String verifies="";
 
   @override
   State<MyVerify> createState() => _MyVerifyState();
@@ -22,6 +21,7 @@ class _MyVerifyState extends State<MyVerify> {
 
   @override
   Widget build(BuildContext context) {
+
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
@@ -49,7 +49,7 @@ class _MyVerifyState extends State<MyVerify> {
     var code="";
     
     return Scaffold(
-
+      extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset : false,
        body: Stack(
         children: [
@@ -100,7 +100,7 @@ class _MyVerifyState extends State<MyVerify> {
       elevation: 10,
       child: Container(
         padding: EdgeInsets.only(top: 30,left: 20,right: 20,),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Pinput(
                 onChanged: (value){
                   code=value;
@@ -131,8 +131,7 @@ PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: Mo
 
     // Sign the user in (or link) with the credential
     await auth.signInWithCredential(credential);
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Pehlapage()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> navigationpage()));
                       }
                       catch(e){
                         print('Wrong OTP');
@@ -170,4 +169,117 @@ PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: Mo
         ],),
     );
   }
+
 }
+
+// class MyVerify extends StatefulWidget {
+//   const MyVerify({Key? key}) : super(key: key);
+
+//   @override
+//   State<MyVerify> createState() => _MyVerifyState();
+// }
+
+// class _MyVerifyState extends State<MyVerify> {
+
+//   final FirebaseAuth auth=FirebaseAuth.instance;
+//   @override
+//   Widget build(BuildContext context) {
+//     final defaultPinTheme = PinTheme(
+//       width: 56,
+//       height: 56,
+//       textStyle: TextStyle(
+//           fontSize: 20,
+//           color: Color.fromRGBO(30, 60, 87, 1),
+//           fontWeight: FontWeight.w600),
+//       decoration: BoxDecoration(
+//         border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+//         borderRadius: BorderRadius.circular(20),
+//       ),
+//     );
+
+//     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
+//       border: Border.all(color: Color.fromRGBO(114, 178, 238, 1)),
+//       borderRadius: BorderRadius.circular(8),
+//     );
+
+//     final submittedPinTheme = defaultPinTheme.copyWith(
+//       decoration: defaultPinTheme.decoration?.copyWith(
+//         color: Color.fromRGBO(234, 239, 243, 1),
+//       ),
+//     );
+
+//     var code="";
+
+
+//     return Scaffold(
+//       extendBodyBehindAppBar: true,
+//       body: Container(
+//         margin: EdgeInsets.only(left: 25, right: 25),
+//         alignment: Alignment.center,
+//         child: SingleChildScrollView(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               Pinput(
+//                 onChanged: (value){
+//                   code=value;
+//                 },
+//                 length: 6,
+//                 // defaultPinTheme: defaultPinTheme,
+//                 // focusedPinTheme: focusedPinTheme,
+//                 // submittedPinTheme: submittedPinTheme,
+
+//                 showCursor: true,
+//                 onCompleted: (pin) => print(pin),
+//               ),
+//               SizedBox(
+//                 height: 20,
+//               ),
+//               SizedBox(
+//                 width: double.infinity,
+//                 height: 45,
+//                 child: ElevatedButton(
+//                     style: ElevatedButton.styleFrom(
+//                         primary: Colors.green.shade600,
+//                         shape: RoundedRectangleBorder(
+//                             borderRadius: BorderRadius.circular(10))),
+//                     onPressed: () async{
+//                       try{
+// PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: Mobileotp.verifies, smsCode: code);
+
+//     // Sign the user in (or link) with the credential
+//     await auth.signInWithCredential(credential);
+//     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> navigationpage()));
+//     // ignore: use_build_context_synchronously
+//                       }
+//                       catch(e){
+//                         print('Wrong OTP');
+
+//                       }
+                     
+//                     },
+//                     child: Text("Verify Phone Number")),
+//               ),
+//               Row(
+//                 children: [
+//                   TextButton(
+//                       onPressed: () {
+//                         Navigator.pushNamedAndRemoveUntil(
+//                           context,
+//                           'phone',
+//                           (route) => false,
+//                         );
+//                       },
+//                       child: Text(
+//                         "Edit Phone Number ?",
+//                         style: TextStyle(color: Colors.black),
+//                       ))
+//                 ],
+//               )
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
