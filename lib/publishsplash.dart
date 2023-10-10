@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:quikshipnew/allparcelsshow.dart';
+import 'package:quikshipnew/pages/ifsignedinornot.dart';
 
-class acceptparcelsplash extends StatefulWidget {
-  const acceptparcelsplash({super.key});
+class publishsplash extends StatefulWidget {
+  const publishsplash({super.key});
 
   @override
-  State<acceptparcelsplash> createState() => _acceptparcelsplashState();
+  State<publishsplash> createState() => _splashState();
 }
 
-class _acceptparcelsplashState extends State<acceptparcelsplash> {
+class _splashState extends State<publishsplash> {
   @override
   void initState() {
     super.initState();
@@ -38,7 +40,7 @@ class _acceptparcelsplashState extends State<acceptparcelsplash> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 17),
-            child: Text('You have accepted the parcel',
+            child: Text('Successfully published your travel details!',
             style: TextStyle(fontSize: 25,
             fontWeight: FontWeight.bold),),
           )

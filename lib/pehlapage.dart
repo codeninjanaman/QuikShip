@@ -36,7 +36,7 @@ class _PehlapageState extends State<Pehlapage> {
             child: Container(
               width: double.infinity,
               height: MediaQuery.of(context).size.height / 2,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40),bottomRight: Radius.circular(40)),
                 color: Colors.deepPurpleAccent,
               ),
@@ -46,10 +46,10 @@ class _PehlapageState extends State<Pehlapage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 100,bottom: 40),
                     child: Container(
-            alignment: Alignment(0,-0.7),
+            alignment: const Alignment(0,-0.7),
                       height: 150,
                       width: 150,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white
                       ),
@@ -67,10 +67,10 @@ class _PehlapageState extends State<Pehlapage> {
               ),
       elevation: 10,
       child: Container(
-        padding: EdgeInsets.only(top: 30,left: 20,right: 20),
+        padding:  EdgeInsets.only(top: 30,left: 20,right: 20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 15),
+            padding: EdgeInsets.only(bottom: 15),
             child: SizedBox(
               height: 40,
               child: TextField(

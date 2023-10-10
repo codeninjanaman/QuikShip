@@ -42,10 +42,16 @@ dependencies:
   lottie: ^2.2.0
   carousel_slider: ^4.2.1
   smooth_page_indicator: ^1.0.0+2
+  cloud_firestore: ^4.4.3
+  uuid: ^3.0.7
+  http: ^0.13.5
+  passbase_flutter: ^3.2.1
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  get: ^4.6.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -76,6 +82,11 @@ flutter:
     - assets/images/slideshow1.png
     - assets/images/slideshow2.png
     - assets/images/rocket.png
+    - assets/images/Group 26086147.png
+    - assets/images/travel.jpg
+    - assets/images/logo.png
+    - assets/images/35403216.jpg
+    - assets/images/parcel.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

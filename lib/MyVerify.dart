@@ -1,12 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
-import 'package:quikshipnew/MyVerify.dart';
-import 'package:quikshipnew/homepage.dart';
 import 'package:quikshipnew/main.dart';
 import 'package:quikshipnew/mobileotp.dart';
-import 'package:quikshipnew/pehlapage.dart';
+import 'package:quikshipnew/trade.dart';
 
 class MyVerify extends StatefulWidget {
   const MyVerify({super.key});
@@ -17,6 +14,7 @@ class MyVerify extends StatefulWidget {
 
 
 class _MyVerifyState extends State<MyVerify> {
+  final otpenter = TextEditingController();
   final FirebaseAuth auth=FirebaseAuth.instance;
 
   @override
@@ -25,28 +23,28 @@ class _MyVerifyState extends State<MyVerify> {
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
           fontSize: 20,
           color: Color.fromRGBO(30, 60, 87, 1),
           fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
-        border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+        border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
         borderRadius: BorderRadius.circular(20),
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Color.fromRGBO(114, 178, 238, 1)),
+      border: Border.all(color: const Color.fromRGBO(114, 178, 238, 1)),
       borderRadius: BorderRadius.circular(8),
     );
 
     final submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration?.copyWith(
-        color: Color.fromRGBO(234, 239, 243, 1),
+        color: const Color.fromRGBO(234, 239, 243, 1),
       ),
     );
 
-    var code="";
+    var code;
     
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -58,31 +56,31 @@ class _MyVerifyState extends State<MyVerify> {
             child: Container(
               width: double.infinity,
               height: MediaQuery.of(context).size.height / 2.5,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40),bottomRight: Radius.circular(40)),
                 color: Colors.deepPurpleAccent,
               ),
               child: 
-              Column(
+               Column(
                 children: [
                   SizedBox(height: 100,),
 
                   Align(
-                    alignment: Alignment.topLeft,
+                    alignment: Alignment.center,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 15,bottom: 15),
+                      padding: EdgeInsets.only(left: 15,bottom: 15),
                       child: Text('OTP Verification',
-                      style: TextStyle(fontSize: 28,
+                      style: TextStyle(fontSize: 34,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),),
                     ),
                   ),
                   Align(
-                    alignment: Alignment.topLeft,
+                    alignment: Alignment.center,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 15),
+                      padding: EdgeInsets.only(left: 15),
                       child: Text('Please enter the otp sent to you',
-                      style: TextStyle(fontSize: 16,
+                      style: TextStyle(fontSize: 20,
                       color: Colors.white,
                       ),),
                     ),
@@ -92,19 +90,20 @@ class _MyVerifyState extends State<MyVerify> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 210,left: 15,right: 15,bottom: 300),
+            padding: const EdgeInsets.only(top: 210,left: 390,right: 390,bottom: 300),
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(35),
               ),
       elevation: 10,
       child: Container(
-        padding: EdgeInsets.only(top: 30,left: 20,right: 20,),
+        padding: const EdgeInsets.only(top: 30,left: 20,right: 20,),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Pinput(
-                onChanged: (value){
-                  code=value;
-                },
+            controller: otpenter,
+                // onChanged: (value){
+                //   code=value;
+                // },
                 length: 6,
                 // defaultPinTheme: defaultPinTheme,
                 // focusedPinTheme: focusedPinTheme,
@@ -122,16 +121,21 @@ class _MyVerifyState extends State<MyVerify> {
             
               child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.deepPurpleAccent,
+                        backgroundColor: Colors.deepPurpleAccent,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
                     onPressed: () async{
+                      showDialog(context: context, builder: (context){
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    });
                       try{
-PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: Mobileotp.verifies, smsCode: code);
+PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: Mobileotp.verifies, smsCode: otpenter.text);
 
     // Sign the user in (or link) with the credential
     await auth.signInWithCredential(credential);
-    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> navigationpage()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> landingpage()));
                       }
                       catch(e){
                         print('Wrong OTP');
@@ -139,7 +143,10 @@ PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: Mo
                       }
                      
                     },
-                    child: Text("Verify Phone Number")),
+                    child: const Text("Verify Phone Number",
+                    style: TextStyle(
+                      fontSize: 14
+                    ),)),
             ),
           ),
           Padding(
@@ -149,7 +156,7 @@ PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: Mo
               children: [
                 TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Mobileotp()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Mobileotp()));
                       },
                       child: Text(
                         "Edit Phone Number ?",
@@ -171,115 +178,3 @@ PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: Mo
   }
 
 }
-
-// class MyVerify extends StatefulWidget {
-//   const MyVerify({Key? key}) : super(key: key);
-
-//   @override
-//   State<MyVerify> createState() => _MyVerifyState();
-// }
-
-// class _MyVerifyState extends State<MyVerify> {
-
-//   final FirebaseAuth auth=FirebaseAuth.instance;
-//   @override
-//   Widget build(BuildContext context) {
-//     final defaultPinTheme = PinTheme(
-//       width: 56,
-//       height: 56,
-//       textStyle: TextStyle(
-//           fontSize: 20,
-//           color: Color.fromRGBO(30, 60, 87, 1),
-//           fontWeight: FontWeight.w600),
-//       decoration: BoxDecoration(
-//         border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
-//         borderRadius: BorderRadius.circular(20),
-//       ),
-//     );
-
-//     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-//       border: Border.all(color: Color.fromRGBO(114, 178, 238, 1)),
-//       borderRadius: BorderRadius.circular(8),
-//     );
-
-//     final submittedPinTheme = defaultPinTheme.copyWith(
-//       decoration: defaultPinTheme.decoration?.copyWith(
-//         color: Color.fromRGBO(234, 239, 243, 1),
-//       ),
-//     );
-
-//     var code="";
-
-
-//     return Scaffold(
-//       extendBodyBehindAppBar: true,
-//       body: Container(
-//         margin: EdgeInsets.only(left: 25, right: 25),
-//         alignment: Alignment.center,
-//         child: SingleChildScrollView(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Pinput(
-//                 onChanged: (value){
-//                   code=value;
-//                 },
-//                 length: 6,
-//                 // defaultPinTheme: defaultPinTheme,
-//                 // focusedPinTheme: focusedPinTheme,
-//                 // submittedPinTheme: submittedPinTheme,
-
-//                 showCursor: true,
-//                 onCompleted: (pin) => print(pin),
-//               ),
-//               SizedBox(
-//                 height: 20,
-//               ),
-//               SizedBox(
-//                 width: double.infinity,
-//                 height: 45,
-//                 child: ElevatedButton(
-//                     style: ElevatedButton.styleFrom(
-//                         primary: Colors.green.shade600,
-//                         shape: RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.circular(10))),
-//                     onPressed: () async{
-//                       try{
-// PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: Mobileotp.verifies, smsCode: code);
-
-//     // Sign the user in (or link) with the credential
-//     await auth.signInWithCredential(credential);
-//     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> navigationpage()));
-//     // ignore: use_build_context_synchronously
-//                       }
-//                       catch(e){
-//                         print('Wrong OTP');
-
-//                       }
-                     
-//                     },
-//                     child: Text("Verify Phone Number")),
-//               ),
-//               Row(
-//                 children: [
-//                   TextButton(
-//                       onPressed: () {
-//                         Navigator.pushNamedAndRemoveUntil(
-//                           context,
-//                           'phone',
-//                           (route) => false,
-//                         );
-//                       },
-//                       child: Text(
-//                         "Edit Phone Number ?",
-//                         style: TextStyle(color: Colors.black),
-//                       ))
-//                 ],
-//               )
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

@@ -2,8 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:lottie/lottie.dart';
 import 'package:quikshipnew/homepage.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:quikshipnew/navigationbar/drawer.dart';
+import 'package:quikshipnew/navigationbar/getusername.dart';
+import 'package:quikshipnew/navigationbar/getusername2.dart';
+import 'package:quikshipnew/storage/signupcontroller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:quikshipnew/storage/user_model.dart';
+import 'package:uuid/uuid.dart';
 
 class Pehlapage extends StatefulWidget {
   const Pehlapage({super.key});
@@ -19,109 +27,120 @@ class _PehlapageState extends State<Pehlapage> {
   List<String> images=["assets/images/slideshow1.png",
   "assets/images/slideshow2.png"];
 
+
    Future <void> signUserOut() async{
     await FirebaseAuth.instance.signOut().then((value) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Login()));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Login()));
     });
   }
   
   @override
   Widget build(BuildContext context) {
+
+    final controller = Get.put(SignUpController());
+    
     return Scaffold(
       resizeToAvoidBottomInset : false,
       appBar: AppBar(
         toolbarHeight: 38,
-        // backgroundColor: Colors.deepPurpleAccent,
-        backgroundColor: Color(0xFF6361EC)
-        // color: Color.fromRGBO(234, 239, 243, 1)
+        
+        backgroundColor: const Color(0xFF6361EC)
+
       ),
-      drawer: Drawer(
-        child: Container(
-          color: Colors.deepPurple[200],
-          child: ElevatedButton(child: Text('logout'),onPressed: signUserOut,),
-        ),
-      ),
-    
+      drawer: 
+      const mainDrawer(),
       
-       body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 15,top: 15),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text('Welcome,', style: TextStyle(
-                fontSize: 16
-              ),),
+       body: SingleChildScrollView(
+         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 15,top: 15),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text('Welcome,', style: TextStyle(
+                  fontSize: 16
+                ),),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text('Naman',style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              ),),
+          
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Align(
+                alignment: Alignment.topLeft ,
+                child: getusername(documentId: controller.email.text.trim()),
+              ),
             ),
-          ),
-          Padding(
-                    padding: const EdgeInsets.only(left: 10,right: 10),
-                    child: SizedBox(
-                      height: 170,
-                      child:PageView.builder(
-                        onPageChanged: (index){
-                          setState(() {
-                            currentIndex=index % images.length;
-                          });
-                        },
-                        itemBuilder: (context,index){
-                          return SizedBox(
-                            width: double.infinity,
-                            child: Image(image: AssetImage(images[index % images.length])), //end image ke bad firse first pe jana
-                            height: 200
-                            // child: Image(image: AssetImage(images[index])),
-                          );
-                        })
-                      )
-                  ),
-
-
-               Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  for(var i =0;i<images.length;i++) buildIndicator(currentIndex ==i)
-                ],),
-                Padding(
-                  padding: const EdgeInsets.only(top: 22,left: 15),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text('Recent Deliveries',style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12
-                    ),),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15,right: 15,top: 14),
-                  child: SingleChildScrollView(
-                    child: Container(
-
-                      height: 300,
-                      width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100
+            Padding(
+                      padding: const EdgeInsets.only(left: 10,right: 10),
+                      child: SizedBox(
+                        height: 170,
+                        child:PageView.builder(
+                          onPageChanged: (index){
+                            setState(() {
+                              currentIndex=index % images.length;
+                            });
+                          },
+                          itemBuilder: (context,index){
+                            return SizedBox(
+                              width: double.infinity, //end image ke bad firse first pe jana
+                              height: 200,
+                              child: Image(image: AssetImage(images[index % images.length]))
+                              // child: Image(image: AssetImage(images[index])),
+                            );
+                          })
+                        )
                     ),
-                    child: Column(
+       
+       
+                 Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      
-                    ],
-                    ),
+                    for(var i =0;i<images.length;i++) buildIndicator(currentIndex ==i)
+                  ],),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15,right: 15,top: 10),
+                    child: SingleChildScrollView(
+                      child: Container(
+       
+                        height: 100,
+                        width: double.infinity,
+                    
+                      child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 10),
+                          child: Lottie.network(
+          'https://assets1.lottiefiles.com/packages/lf20_v9t4z3we.json'),
+                        )
+                      ],
+                      ),
+                      ),
                     ),
                   ),
-                )
-
-        ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15,right: 15,top: 10),
+                    child: SingleChildScrollView(
+                      child: Container(
+       
+                        height: 300,
+                        width: double.infinity,
+                    
+                      child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 10),
+                          child: Lottie.network(
+          'https://assets1.lottiefiles.com/packages/lf20_kx6a1byu.json'),
+                        )
+                      ],
+                      ),
+                      ),
+                    ),
+                  ),
+       
+          ],
+         ),
        )
     );
   }
